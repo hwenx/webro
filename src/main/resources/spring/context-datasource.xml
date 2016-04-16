@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+						http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
+	
+<!-- 	<bean id="dataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	    <property name="url" value="jdbc:mysql://localhost:3306/webro"/>
+	    <property name="username" value="root"/>
+	    <property name="password" value="1234"/> -->
+
+	<bean id="dataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	    <property name="url" value="jdbc:mysql://webro.co5lcqf9koip.us-west-2.rds.amazonaws.com:3306/webro"/>
+	    <property name="username" value="webro"/>
+	    <property name="password" value="webro1234!"/>
+	    
+	    <!-- 서비스 기동할때의 생성 개수 -->
+		<property name="initialSize" value="4"/>
+		<!-- 한번에 처리 할수 있는 최대 개수 -->
+		<property name="maxActive" value="10"/>		
+		<!-- pool 에 존재 할수있는 최대 개수 -->
+        <property name="maxIdle" value="8"/>
+        <!-- pool 에 존재 할수있는 최소 개수 -->
+        <property name="minIdle" value="4"/>        
+        <!--maxActive 개수 이상으로 호출이 들어왔을때 최대 대기 시간 -->
+        <property name="maxWait" value="10000"/>
+	</bean>
+	
+	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="dataSourceSpied" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE" />
+				<property name="sqlPrefix" value="SQL         :  "/>
+			</bean>
+		</property>
+	</bean>	
+
+</beans>
