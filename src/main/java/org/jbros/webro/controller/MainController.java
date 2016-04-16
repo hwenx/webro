@@ -49,7 +49,6 @@ public class MainController {
 			mav.addObject("bodyContents", view+".jsp");
 			
 		}
-			
 		
 		return mav;
 	}
