@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@RequestMapping("/member")
 public class MainController {
 	Logger log = Logger.getLogger(this.getClass());
 	

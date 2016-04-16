@@ -29,7 +29,7 @@ requirejs(['jquery', 'bootstrap'], function($) {
 				<li><a href="./home">HOME</a></li>
 				<li><a href="./boardpage">Board</a></li>
 				<li><a href="./schedulerpage">Scheduler</a></li>
-<!-- 				<li><a href="#">HOME</a></li>
+<!-- 			<li><a href="#">HOME</a></li>
 				<li><a href="#">메뉴1</a></li>
 				<li><a href="#">메뉴2</a></li> -->
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
