@@ -152,14 +152,18 @@ $('body').hide();
 }
 </style>
 
-<script type="text/javascript">				/* 모바일 draggable 플러그인 하지만 chat body 안에 스크롤 동작안함  */
+<script type="text/javascript">				
+
+//socket 서버가 죽어 있으면 화면이 뜨지 않을 수 있으므로 채팅 스크립트와 분리
+require(['jquery'], function($) {
+	  //css 로드 된 후 body show
+	  $('body').show();  	
+});
+
+											/* 모바일 draggable 플러그인 하지만 chat body 안에 스크롤 동작안함  */
 require(['jquery', 'socket.io', 'jquery.ui'/* , 'jquery.touch' */], function($, io) {
 	  //접속된 유저 리스트 저장
 	  var connectUser = [];
-	
-	  //css 로드 된 후 body show
-	  $('body').show();  
-	  
 	
  	  $('#chatheader').on('click', function(e){
  		  if($('.panel-body').is(':visible')){
@@ -418,8 +422,6 @@ require(['jquery', 'socket.io', 'jquery.ui'/* , 'jquery.touch' */], function($, 
   		  userInit();
   		  
       }
-      
-		
       
 });
 </script>
