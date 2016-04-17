@@ -9,6 +9,10 @@
 <title>welcome</title>
 </head>
 <body>
+<script type="text/javascript">
+//css 로드가 되기전에 dom이 먼저 구성이 되어서 깨지는 화면이 먼저 나옴을 막기 위해 최초에 body를 hide 시키고 css가 로드 된 뒤에 다시 show 함
+$('body').hide();
+</script>
 	<!-- chatting 부분 -->
 	<div class="col-md-1" style="position:absolute;z-index: 999;margin-left:50%" id="chatlayout">
             <div class="panel panel-primary" id="dragDiv">
@@ -96,7 +100,7 @@
                 </div>
                 <div class="panel-footer" style="display:none;">
                     <div class="input-group">
-                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here...">
+                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="메시지를 입력하세요...">
                         <span class="input-group-btn">
                             <button class="btn btn-warning btn-sm" id="btn-chat">
                                 Send</button>
@@ -149,6 +153,12 @@
 
 <script type="text/javascript">				/* 모바일 draggable 플러그인 하지만 chat body 안에 스크롤 동작안함  */
 require(['jquery', 'socket.io', 'jquery.ui'/* , 'jquery.touch' */], function($, io) {
+	  //접속된 유저 리스트 저장
+	  var connectUser = [];
+	
+	  //css 로드 된 후 body show
+	  $('body').show();  
+	  
 	
  	  $('#chatheader').on('click', function(e){
  		  if($('.panel-body').is(':visible')){
@@ -174,14 +184,16 @@ require(['jquery', 'socket.io', 'jquery.ui'/* , 'jquery.touch' */], function($, 
 	  
 	  //서버에 보낼 데이터 오브젝트
 	  sendData = {
-		userId 		: userId,   //아이디
-		beforeId	: '',		//변경전 아이디
-		msg 		: '',       //메시지
-		msgType 	: '',		//메시지 타입
-		fromId 		: '',		//귓속말 상대
-		userType 	: 'GUEST',  //사용자타입
-		userState   : 'F',		//전송 타입 F=최초접속, CID=아이디변경
-		picData 	: ''	    //사진
+		userId 		    : userId,   //아이디
+		beforeId	    : '',		//변경전 아이디
+		msg 		    : '',       //메시지
+		msgType 	    : '',		//메시지 타입
+		whisperTarget   : '',		//귓속말 대상
+		whisperReceive  : '',		//귓속말 보낸 유저 
+		fromId 		    : '',		//귓속말 상대
+		userType 	    : 'GUEST',  //사용자타입
+		userState       : 'F',		//전송 타입 F=최초접속, CID=아이디변경
+		picData 	    : ''	    //사진
 	  }
 	  
 	  var socket = io.connect(window.socketioAddr);
@@ -198,22 +210,85 @@ require(['jquery', 'socket.io', 'jquery.ui'/* , 'jquery.touch' */], function($, 
 	  //서버로 보냄
 	  $("#btn-input").keyup(function(event) {
 		  event.preventDefault();
+		  var msg = $('#btn-input').val();
+		  
+		  //귓속말 관련 로직  32 space bar
+		  if(event.which == 32){
+			  if(msg.indexOf('/x') !== -1 && msg.length === 3){
+				  sendData.whisperTarget = '';
+				  $('#btn-input').val('');
+				  $('#btn-input').attr('placeholder', '메시지를 입력하세요...');
+			  }
+			  
+			  // [/w]
+			  if(msg.indexOf('/w') !== -1){
+				  var position = [];
+				  var pos = msg.indexOf(' ');
+				  
+				  //찾을 위치를 증가 시키면서 공백의 index 위치를 찾음
+				  while(pos > -1){
+					  position.push(pos);
+					  pos = msg.indexOf(' ', pos+1);
+				  }
+				  //공백이 3개 이상이면 귓속말 기능 동작안함 형식에 맞지 않는 명령어를 썻을 경우 방어 로직
+				  if(position.length >= 3){
+					  return;
+				  }
+				  
+				  //공객이 2개가 있을 경우 /w_아이디_ 아이디만 뽑기 위함  
+				  if(position.length === 2){
+				  	var whisperTarget = msg.substring(position[0], position[1]).trim();
+				  	if(userCheck(whisperTarget)){
+					  	sendData.whisperTarget = whisperTarget;
+					  	$('#btn-input').val('');
+					  	$('#btn-input').attr('placeholder', whisperTarget+'님 에게 보낼 메시지를 입력하세요');	
+				  	}else{
+				  		$('#btn-input').val('');
+				  		$('#btn-input').attr('placeholder', '존재 하지 않거나 자신에게 귓속말할 수 없습니다.');
+				  	}
+				  	
+				  }
+			  }
+			  
+			  //[/r]
+			  if(msg.indexOf('/r') !== -1){
+				  if(msg.length === 3){
+					  var whisperReceive = sendData.whisperReceive.trim();
+					  if(whisperReceive !== '' && whisperReceive !== undefined){
+						if(userCheck(whisperReceive)){
+						    sendData.whisperTarget = whisperReceive;
+					  	    $('#btn-input').val('');
+					  	    $('#btn-input').attr('placeholder', whisperReceive+'님 에게 보낼 메시지를 입력하세요');	
+					  	}else{
+					  		$('#btn-input').val('');
+					  		$('#btn-input').attr('placeholder', whisperReceive+' 존재 하지 않습니다.');
+					  	}
+						  
+					  }
+				  }
+			  }
+			  
+		  }		
+		  
           if (event.which == 13) {
-        	  sendData.msg = $('#btn-input').val();
+        	  sendData.msg = msg;
               socket.emit('fromclient', sendData);
               $('#btn-input').val('');
               msgDisplay(sendData, 'me');
+              $('#btn-input').attr('placeholder', '메시지를 입력하세요...');
               
           }
       });
 	  
 	  //서버로 부터 받음
       socket.on('toclient',function(data){
+    	  //io connection 동시에 서버로 부터 받는 부분
           if(data.userId === undefined){
         	  data.userId = 'Admin';
         	  sendData.userState = '';
           }
           
+    	  //최초 userInit() 실행시에 서버로 부터 받는 부분
           if(data.userState === 'F'){
         	  data.msg = data.userId + '님 접속 하였습니다';
           }
@@ -230,8 +305,20 @@ require(['jquery', 'socket.io', 'jquery.ui'/* , 'jquery.touch' */], function($, 
       
 	  //사용자가 추가되거나 삭제 될때 마다 사용자 리스트를 받음
       socket.on('userlist', function(data){
+    	  connectUser = data.users;
     	  console.log('userList : ' + data.users);
       })
+      
+      function userCheck(user){
+		  for(var i in connectUser){
+			  if(connectUser[i] === user){
+				  if(sendData.userId !== connectUser[i]){
+					  return true;
+				  }
+			  }
+		  }
+		  return false;
+	  }
       
       
       //비회원아이디 생성
@@ -249,9 +336,19 @@ require(['jquery', 'socket.io', 'jquery.ui'/* , 'jquery.touch' */], function($, 
       function msgDisplay(data, type){
     	  var html = '';
     	  if('me' === type){
+	    	  var bodyDiv = '';
+    		  if(data.whisperTarget !== ''){
+    			  bodyDiv = '<div class="chat-body clearfix" style="background-color:yellow">'
+    			  //귓속말 초기화
+    			  sendData.whisperTarget = '';
+    			  $('#btn-input').attr('placeholder', '메시지를 입력하세요...')
+    		  }else{
+	    	  	  bodyDiv = '<div class="chat-body clearfix">';
+    		  }
+    		  
     		  html = '<li class="right clearfix"><span class="chat-img pull-right">'+
  	  		 '<img src="http://placehold.it/50/FA6F57/fff&amp;text=ME" alt="User Avatar" class="img-circle"></span>'+
- 	  		 '<div class="chat-body clearfix">'+
+ 	  		  bodyDiv+
  	  		 '<div class="header">'+
  	  		 '<small class=" text-muted"><span class="glyphicon glyphicon-time"></span>'+getTime()+'</small>'+
  	  		 '<strong class="pull-right primary-font">'+data.userId+'</strong>'+
@@ -259,9 +356,19 @@ require(['jquery', 'socket.io', 'jquery.ui'/* , 'jquery.touch' */], function($, 
  	  		 '<p>'+data.msg+'</p>'+
  	  		 '</div></li>';
     	  }else{
+    		  var bodyDiv = '';
+    		  if(data.whisperTarget !== '' && data.whisperTarget !== undefined){
+    			  bodyDiv = '<div class="chat-body clearfix" style="background-color:yellow">'
+    			  //귓속말 보낸 유저 저장 하기 /r 사용을 위해 저장함 
+    			  sendData.whisperReceive = data.userId;
+    		  }else{
+	    	  	  bodyDiv = '<div class="chat-body clearfix">';
+    		  }
+    		  
+    		  
     		  html = '<li class="left clearfix"><span class="chat-img pull-left">'+
   	  		 '<img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="User Avatar" class="img-circle"></span>'+
-  	  		 '<div class="chat-body clearfix">'+
+  	  		   bodyDiv+
   	  		 '<div class="header">'+
   	  		 '<strong class="primary-font">'+data.userId+'</strong> <small class="pull-right text-muted">'+
   	  		 '<span class="glyphicon glyphicon-time"></span>'+getTime()+'</small>'+
@@ -290,7 +397,7 @@ require(['jquery', 'socket.io', 'jquery.ui'/* , 'jquery.touch' */], function($, 
       //모바일에서 draggable 이 작동을 하지 않아 jquery.touch을 추가 하여 가능 하게 하였지만 
       //jquery.touch를 추가 하자 모바일에서 input=text에 터치를 해도 포커스가 가지 않아 아래 구문을 추가함 
 	  $('#btn-input').on('click', function(e){
-    	  e.preventDefault();
+    	e.preventDefault();
 	  	$(this).focus();
       });
       
