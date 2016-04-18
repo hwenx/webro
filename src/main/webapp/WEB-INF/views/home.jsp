@@ -150,6 +150,9 @@ $('body').hide();
 	/* border: 1px solid #FF0000; */
 	padding-top:10px;
 }
+
+/* chat body toggle을 쓰면 자동으로 overflow가 hidden을 먹음 히든을 풀기 위한 방법 */
+.panel-body{overflow:auto!important}  
 </style>
 
 <script type="text/javascript">				
@@ -164,18 +167,17 @@ require(['jquery'], function($) {
 require(['jquery', 'socket.io', 'jquery.ui'/* , 'jquery.touch' */], function($, io) {
 	  //접속된 유저 리스트 저장
 	  var connectUser = [];
-	
+	  
  	  $('#chatheader').on('click', function(e){
  		  if($('.panel-body').is(':visible')){
  		  	$('#chatlayout').attr('class', 'col-md-1');
  		  }else{
- 		  	$('#chatlayout').attr('class', 'col-md-3');
+ 		  	$('#chatlayout').attr('class', 'col-md-4');
  		  }
  		  
 		  	$('.panel-body').slideToggle();
 			$('.panel-footer').slideToggle();
 			$('.dropdown-toggle').slideToggle();
-		  
 	  });
 	  
 	  var loginYn = "${isLoginYn}";

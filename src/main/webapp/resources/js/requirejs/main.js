@@ -7,17 +7,22 @@ requirejs.config({
     //never includes a '.js' extension since
     //the paths config could be for a directory.
     paths: {
+    	//css
+    	'glyphiconscss'	: 'http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css', //explorer깨짐 방지
+    	
+    	//js
         'jquery' 	  	: 'js/jquery/jquery-1.12.0',
         'bootstrap'   	: 'js/bootstrap/bootstrap',
         'css'	 	  	: 'js/requirejs/require-css',
         'jquery.ui'	 	: 'js/jquery/jquery-ui.min',
         'jquery.touch'	: 'js/jquery/jquery.ui.touch-punch',
-        'socket.io'		: 'http://'+window.socketioAddr+'/socket.io/socket.io'    //include.jsp에서 만듬
+        'socket.io'		: 'http://'+window.socketioAddr+'/socket.io/socket.io',    //include.jsp에서 만듬
+        
         
     },
     
     shim : {
-    	'bootstrap' : ['jquery', 'css!js/bootstrap/css/bootstrap.css']
+    	'bootstrap' : ['jquery', 'css!js/bootstrap/css/bootstrap.css', 'css!glyphiconscss'],
     },
 
     waitSeconds: 50
