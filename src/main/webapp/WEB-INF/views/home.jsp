@@ -26,8 +26,8 @@ $('body').hide();
                         <ul class="dropdown-menu slidedown">
                             <li><a href="javascript:changeId();"><span class="glyphicon glyphicon-refresh">
                             </span>대화명 변경</a></li>
-                            <li><a href=""><span class="glyphicon glyphicon-ok-sign">
-                            </span>귓속말</a></li>
+                            <!-- <li><a href=""><span class="glyphicon glyphicon-ok-sign">
+                            </span>귓속말</a></li> -->
 <!--                             <li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-remove">
                             </span>Busy</a></li>
                             <li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-time"></span>
@@ -104,7 +104,10 @@ $('body').hide();
                         <input id="btn-input" type="text" class="form-control input-sm" placeholder="메시지를 입력하세요...">
                         <span class="input-group-btn">
                             <button class="btn btn-warning btn-sm" id="btn-chat">
-                                Send</button>
+                                	보내기</button>
+                            <button class="btn btn-warning btn-sm" id="btn-picture">
+                                	사진보첨부</button>
+                            <input type="file" style="display:none" id="fileInput">
                         </span>
                     </div>
                 </div>
@@ -213,6 +216,48 @@ require(['jquery', 'socket.io', 'jquery.ui'/* , 'jquery.touch' */], function($, 
           $('#btn-input').val('');
           msgDisplay(sendData, 'me');
 	  })
+	  
+	  $('#btn-picture').on('click', function(e){
+		  e.preventDefault();
+		  $('#fileInput').click();
+	  })
+	  
+	   $("#fileInput").change(function(){
+        //alert(this.value); //선택한 이미지 경로 표시
+        readURL(this);
+    	});
+	  
+	  window.readURL = function(input) {
+			console.log(input.files[0].name);
+			var fileSuffix = input.files[0].name.substring(input.files[0].name.lastIndexOf(".") + 1);
+			console.log(fileSuffix);
+		    fileSuffix = fileSuffix.toLowerCase();
+		    if ( "jpg" == fileSuffix || "jpeg" == fileSuffix  || "gif" == fileSuffix || "bmp" == fileSuffix ){
+		    }else{
+		    	alert('이미지 파일이 압니다.');
+		    	return;
+		    } 
+		        
+		    
+		    
+	        if (input.files && input.files[0]) {
+	            var reader = new FileReader(); //파일을 읽기 위한 FileReader객체 생성
+	            reader.onload = function (e) {
+	            //파일 읽어들이기를 성공했을때 호출되는 이벤트 핸들러
+	                
+	                sendData.picData = e.target.result;
+	                sendData.msgType = 'PIC';
+	                socket.emit('fromclient', sendData); 
+	                $('#btn-input').val('');
+	                msgDisplay(sendData, 'me');
+	                sendData.msgType= '';
+	                //이미지 Tag의 SRC속성에 읽어들인 File내용을 지정
+	                //(아래 코드에서 읽어들인 dataURL형식)
+	            }                   
+	            reader.readAsDataURL(input.files[0]);
+	            //File내용을 읽어 dataURL형식의 문자열로 저장
+	        }
+	    }//readURL()--
 	  
 	  //서버로 보냄
 	  $("#btn-input").keyup(function(event) {
@@ -360,7 +405,7 @@ require(['jquery', 'socket.io', 'jquery.ui'/* , 'jquery.touch' */], function($, 
  	  		 '<small class=" text-muted"><span class="glyphicon glyphicon-time"></span>'+getTime()+'</small>'+
  	  		 '<strong class="pull-right primary-font">'+data.userId+'</strong>'+
  	  		 '</div>'+
- 	  		 '<p>'+data.msg+'</p>'+
+ 	  		 '<p>'+(data.msgType !== 'PIC'?data.msg:'<img src="'+data.picData+'" width="50%" height="50%">')+'</p>'+
  	  		 '</div></li>';
     	  }else{
     		  var bodyDiv = '';
@@ -380,7 +425,7 @@ require(['jquery', 'socket.io', 'jquery.ui'/* , 'jquery.touch' */], function($, 
   	  		 '<strong class="primary-font">'+data.userId+'</strong> <small class="pull-right text-muted">'+
   	  		 '<span class="glyphicon glyphicon-time"></span>'+getTime()+'</small>'+
   	  		 '</div>'+
-  	  		 '<p>'+data.msg+'</p>'+
+  	  		 '<p>'+(data.msgType !== 'PIC'?data.msg:'<img src="'+data.picData+'" width="50%" height="50%">')+'</p>'+
   	  		 '</div></li>';
     		  
     		  
