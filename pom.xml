@@ -229,6 +229,7 @@
 		</dependency>
 	</dependencies>
     <build>
+    	<finalName>webro</finalName><!-- war파일 생성시 파일네임 -->
         <plugins>
             <plugin>
                 <artifactId>maven-eclipse-plugin</artifactId>
