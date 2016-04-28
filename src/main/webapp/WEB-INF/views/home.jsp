@@ -11,6 +11,7 @@
 </head>
 <body>
 <script type="text/javascript">
+alert('jenkins 자동 배포 테스트');
 //css 로드가 되기전에 dom이 먼저 구성이 되어서 깨지는 화면이 먼저 나옴을 막기 위해 최초에 body를 hide 시키고 css가 로드 된 뒤에 다시 show 함
 $('body').hide();
 </script>
