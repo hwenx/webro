@@ -1,0 +1,35 @@
+
+#howdo-post-table #howdo-table-center{ 
+	width=960px; 
+	style=table-layout:fixed; 
+	word-break:break-all;	
+	text-align: center;
+	}
+#howdo-data {text-align: center; font-size:12px} 
+.howdo-tableDiv ,th{
+	width="100%"; 
+	style=table-layout:fixed; 
+	word-break:break-all;	
+	text-align: center;
+	font-size : 14px;
+}
+#sendTitle {
+	text-align: center;
+	font-size: 12px;
+	background-color: #CEEBFF;
+}
+#receiveTitle {
+	text-align: center;
+	font-size: 12px;
+	background-color: #FFFFD6;
+}
+#textTitle{
+	text-align: center;
+	font-size: 12px;
+}
+/* 
+#jhDiv{
+	border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+	border-right: 1px solid rgba(0, 0, 0, 0.09);
+	border-left: 1px solid rgba(0, 0, 0, 0.09);
+} */

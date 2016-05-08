@@ -9,22 +9,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("mainService")
-public class MainServiceImpl implements IMainService{
-	private Logger logger = LoggerFactory.getLogger(MainServiceImpl.class);
+@Service("usersService")
+public class UsersServiceImpl implements IMainService{
+	private Logger logger = LoggerFactory.getLogger(UsersServiceImpl.class);
 	
 	@Autowired
 	private IMainMapper mapper;
 
 	@Override
 	public int getUserCount(){
-		System.out.println("=======  UserCount =======");
 		return mapper.selectUserCount();
 	}
 	
 	@Override
 	public UserModel getUser(String id){
-		
+		logger.info("User input Id {}" + id);
 		UserModel um = mapper.selectUser(id);
 		return um;
 	}

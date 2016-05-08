@@ -31,21 +31,23 @@
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
-
-<!-- 	<logger name="org.springframework.context">
+<!-- 
+	<logger name="org.springframework.context">
 		<level value="info" />
 	</logger>
 
 	<logger name="org.springframework.web">
 		<level value="info" />
-	</logger> -->
-	
-		<!-- query Loggers -->
+	</logger>
+	 -->
+<!-- 	 
+		query Loggers
     <logger name="jdbc.sqlonly" additivity="false">  
         <level value="info"/>  
         <appender-ref ref="console-infolog"/>  
     </logger>
-	
+ -->
+ 	
 	<logger name="jdbc.resultsettable" additivity="false">
 	    <level value="info"/>
 	    <appender-ref ref="console"/>
