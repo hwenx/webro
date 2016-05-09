@@ -7,6 +7,7 @@
 <%@ include file="/WEB-INF/include/headTag.jsp" %>
 <title>WEBRO Main Page</title>
 </head>
+
 <body>
 <!-- container -->
 	<div class="container">
@@ -22,13 +23,9 @@
 <!-- body main  -->
 				<jsp:include page="${bodyContent}" flush="false" /> 
 		</div>
-<!-- footer  -->
+		<!-- footer  -->
 	<%-- <%@ include file="/WEB-INF/include/footer.jsp" %> --%>
 
 	</div>
-</body>
-
-<script src="${pageContext.request.contextPath}/resources/js/jquery/jquery-1.12.0.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/bootstrap/bootstrap.min.js"></script>
 
 </html>

@@ -39,6 +39,11 @@ public class MainController {
 		return mav;
 	}
 	
+	/**
+	 * 로그인 
+	 * 
+	 * @return
+	 */
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public ModelAndView login(ModelAndView mav, HttpServletRequest req, HttpServletResponse res){
 		HttpSession session = req.getSession();
@@ -66,6 +71,9 @@ public class MainController {
 		return mav;
 	}
 	
+	/**
+	 * 게시판 이동
+	 */
 	@RequestMapping(value="/posts/move_list", method=RequestMethod.GET)
 	public ModelAndView movePostList(){
 		ModelAndView mav = new ModelAndView();
