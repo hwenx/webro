@@ -119,6 +119,7 @@
 <script type="text/javascript">
 
 	window.readURL = function(input) {
+		console.log(input.value)
 		console.log(input.files[0].name);
 		var fileSuffix = input.files[0].name.substring(input.files[0].name.lastIndexOf(".") + 1);
 		console.log(fileSuffix);

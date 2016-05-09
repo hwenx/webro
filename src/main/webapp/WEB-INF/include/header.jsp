@@ -23,7 +23,7 @@
 				<ul class="nav navbar-nav">
 					<li ><a href="${pageContext.request.contextPath}/posts/move_list">스케쥴 </a></li>
 					
-					<li id= "hoon1"class="dropdown">
+					<li id="hoon1" class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true">WEBRO <i class="glyphicon glyphicon-triangle-bottom"></i></a>
 							<ul class="dropdown-menu">
 								<li class=" "><a href="${pageContext.request.contextPath}/posts/move_list">정기모임</a></li>

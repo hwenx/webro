@@ -234,6 +234,14 @@
 			<artifactId>gson</artifactId>
 			<version>1.7.1</version>
 		</dependency>
+	
+		<!-- s3 이미지 업로드 용 -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>1.10.76</version>
+		</dependency>
+		
 	</dependencies>
     <build>
     	<finalName>webro</finalName><!-- war파일 생성시 파일네임 -->
