@@ -18,6 +18,11 @@ public class MainController {
 	
 	private Logger logger = LoggerFactory.getLogger(MainController.class);
 	
+	/**
+	 * / 세션 체크
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public ModelAndView home(HttpSession session){
 		ModelAndView mav = new ModelAndView();
@@ -33,25 +38,6 @@ public class MainController {
 			
 		return mav;
 	}
-	
-/*	@RequestMapping(value="/{viewname}", method={RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView main(@PathVariable("viewname") String view, ModelAndView mav, HttpServletRequest req){
-		HttpSession session = req.getSession();
-		mav.setViewName("home");	
-		
-		Boolean check = (Boolean) session.getAttribute("isSession");
-		if(check != null && check) mav.addObject("isLoginYn", "Y");
-
-		if("home".equals(view)){
-			mav.addObject("bodyContents", "body.jsp");
-			
-		}else{
-			mav.addObject("bodyContents", view+".jsp");
-			
-		}
-		
-		return mav;
-	}*/
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public ModelAndView login(ModelAndView mav, HttpServletRequest req, HttpServletResponse res){
@@ -88,7 +74,6 @@ public class MainController {
 		
 		return mav;
 	}
-	
 	
 	@RequestMapping(value="/users/login", method=RequestMethod.GET)
 	public ModelAndView moveLogin(){
