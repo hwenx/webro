@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<nav class="navbar navabar-defaout navbar-fixed-top" style = "border: 1px solid rgba(0, 0, 0, 0.09);">
+<nav class="navbar navabar-defaout navbar-fixed-top" style = "border: 1px solid rgba(0, 0, 0, 0.09); background-color: white;">
 	<div class="container">
 		<div class="col-lg-3 col-md-3 col-sm-9 col-xs-9">
 			<div class="brand-wrap">
