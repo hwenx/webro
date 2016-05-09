@@ -89,5 +89,15 @@ public class MainController {
 		return mav;
 	}
 	
+	
+	@RequestMapping(value="/users/login", method=RequestMethod.GET)
+	public ModelAndView moveLogin(){
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/home");
+		mav.addObject("bodyContent", "/WEB-INF/views/users/login.jsp");
+		
+		return mav;
+	}
+	
 
 }

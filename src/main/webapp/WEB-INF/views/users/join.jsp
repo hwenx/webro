@@ -1,24 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<div class="row">
+<div class="col-md-9 two-column-right" style="padding-top: 110px;">
 	<div class="col-md-12">
 		<div class="page-header">
 			<h1>
 				회원가입 <small>일반회원가입</small>
 			</h1>
 		</div>
-		<form class="form-horizontal" action="./users" method="post">
+		<form class="form-horizontal" action="./submitUser" method="post" id="joinForm" enctype="multipart/form-data">
+			<div class="form-group">
+				<label for="inputId" class="col-sm-2 control-label">아이디</label>
+				<div class="col-sm-6">
+					<input type="text" class="form-control" id="inputId" name="inputId"
+						placeholder="아이디">
+					<div class="help-block" id="idCheck"></div>
+				</div>
+			</div>
 			<div class="form-group">
 				<label for="inputEmail" class="col-sm-2 control-label">이메일</label>
 				<div class="col-sm-6">
-					<input type="email" class="form-control" id="inputEmail"
+					<input type="email" class="form-control" id="inputEmail" name="inputEmail"
 						placeholder="이메일">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="inputPassword" class="col-sm-2 control-label">비밀번호</label>
 				<div class="col-sm-6">
-					<input type="password" class="form-control" id="inputPassword"
+					<input type="password" class="form-control" id="inputPassword" name="inputPassword"
 						placeholder="비밀번호">
 					<p class="help-block" id="passCheck">5자리 이상</p>
 				</div>
@@ -42,7 +50,19 @@
 			<div class="form-group">
 				<label for="inputName" class="col-sm-2 control-label">이름</label>
 				<div class="col-sm-6">
-					<input type="text" class="form-control" id="inputName" placeholder="이름">
+					<input type="text" class="form-control" id="inputName" name="inputName" placeholder="이름">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputPhone" class="col-sm-2 control-label">핸드폰 번호</label>
+				<div class="col-sm-6">
+					<input type="text" class="form-control" id="inputPhone" name="inputPhone" placeholder="폰번호">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputBirth" class="col-sm-2 control-label">생일월일</label>
+				<div class="col-sm-6">
+					<input type="text" class="form-control" id="inputBirth" name="inputBirth" placeholder="yyyymmdd">
 				</div>
 			</div>
 			<!-- <div class="form-group">
@@ -80,7 +100,7 @@
 						class="img-thumbnail" alt="Cinque Terre" width="204" height="136" 
 						onclick="$('#fileInput').click();" id="pictureselector" style="cursor:crosshair">
 					<form>
-						<input type="file" id="fileInput" style="display:none"/>
+						<input type="file" id="fileInput" name="fileInput" style="display:none"/>
 					</form>
 					
 				</div>
@@ -98,13 +118,12 @@
 
 <script type="text/javascript">
 
-requirejs([ 'jquery', 'bootstrap' ], function($) {
 	window.readURL = function(input) {
 		console.log(input.files[0].name);
 		var fileSuffix = input.files[0].name.substring(input.files[0].name.lastIndexOf(".") + 1);
 		console.log(fileSuffix);
 	    fileSuffix = fileSuffix.toLowerCase();
-	    if ( "jpg" == fileSuffix || "jpeg" == fileSuffix  || "gif" == fileSuffix || "bmp" == fileSuffix ){
+	    if ( "jpg" == fileSuffix || "jpeg" == fileSuffix  || "gif" == fileSuffix || "bmp" == fileSuffix || "png" == fileSuffix){
 	    }else{
 	    	alert('이미지 파일이 압니다.');
 	    	return;
@@ -134,6 +153,7 @@ requirejs([ 'jquery', 'bootstrap' ], function($) {
 /* 	$('#fileInput').on('change', function(e){
 		console.log(e);
 	}) */
+	
 	
 	window.emailcheck = function(strValue) {
 		var regExp = /[0-9a-zA-Z][_0-9a-zA-Z-]*@[_0-9a-zA-Z-]+(\.[_0-9a-zA-Z-]+){1,2}$/;
@@ -175,6 +195,17 @@ requirejs([ 'jquery', 'bootstrap' ], function($) {
 	
 	window.joinProcess = function(){
 		var email = $('#inputEmail').val();
+		var id = $('#inputId').val();
+		if(id === '' || id === undefined){
+			alert('아이디는 필 수 항목 입니다.');
+			return;
+		}else{
+			if('사용불가' === $('#idCheck').text()){
+				alert('사용 불가 아이디 입니다.');
+				return;
+			}
+		}
+		
 		//1. 이메일 검사
 		if(!emailcheck(email)) return;
 		
@@ -189,12 +220,13 @@ requirejs([ 'jquery', 'bootstrap' ], function($) {
 		}
 		
 		//4. 프로필 사진 유무 검사
-		console.log();
 		var file = $('#fileInput').val();
 		if(file === '' || file === null){
 			alert('프로필 사진은 필수 입니다.');
 			return;
 		}
+		
+		$('#joinForm').submit();
 		
 	}
 	
@@ -225,7 +257,27 @@ requirejs([ 'jquery', 'bootstrap' ], function($) {
 		}
 	})
 	
+	$('#inputId').on('keyup', function(){
+		console.log('keyup');
+		var value = this.value;
+		var m = 'GET';
+		var url = './DupleCheck.ajax';
+		var data = {
+				id : value
+		}
+		Common.ajaxFactory(m, url, data, function(result){
+			var id = $('#inputId').val();
+			if(result === 0){
+				if(id === '' || id === undefined){
+					$('#idCheck').text('사용불가').css('color', 'red');	
+				}else
+					$('#idCheck').text('사용가능').css('color', 'black');
+			}else
+				$('#idCheck').text('사용불가').css('color', 'red');
+			
+		});
+		
+	})
 	
-
-});
+	
 </script>

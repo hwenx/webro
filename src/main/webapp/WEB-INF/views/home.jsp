@@ -28,6 +28,7 @@
 	</div>
 </body>
 
-<script src="${pageContext.request.contextPath}/resources/js/bootstrap/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery/jquery-1.12.0.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/bootstrap/bootstrap.min.js"></script>
+
 </html>

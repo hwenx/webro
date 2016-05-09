@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 public interface IUsersMapper {
 	public int selectUserCount();
 	public UserModel selectUser(String id);
+	public int joinUser(UserModel user);
+	public int dupleIdCheck(String id);
 }

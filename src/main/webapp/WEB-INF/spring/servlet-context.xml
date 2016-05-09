@@ -38,4 +38,5 @@
 	<!-- controller에서  타입을  String 으로 받으려면 리졸버 추가  -->
 	<beans:bean id="viewNameTranslator" class="org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator" />
 	
+	
 </beans:beans>

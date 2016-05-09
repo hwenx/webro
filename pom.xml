@@ -227,6 +227,13 @@
 			<artifactId>junit</artifactId>
 			<version>4.7</version>
 		</dependency>
+		
+		<!-- ajax 리턴 용 gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>1.7.1</version>
+		</dependency>
 	</dependencies>
     <build>
     	<finalName>webro</finalName><!-- war파일 생성시 파일네임 -->
@@ -265,6 +272,8 @@
                     <mainClass>org.test.int1.Main</mainClass>
                 </configuration>
             </plugin>
+            
+            
         </plugins>
     </build>
 </project>

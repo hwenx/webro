@@ -13,8 +13,8 @@
 	    <property name="password" value="1234"/> -->
 
 	<bean id="dataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-	    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-	    <property name="url" value="jdbc:mysql://webro.co5lcqf9koip.us-west-2.rds.amazonaws.com:3306/webro"/>
+	    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>									<!-- insert 시 한글 깨짐 방지 -->
+	    <property name="url" value="jdbc:mysql://webro.co5lcqf9koip.us-west-2.rds.amazonaws.com:3306/webro?useUnicode=yes&amp;characterEncoding=UTF-8&amp;autoReconnect=true"/>
 	    <property name="username" value="webro"/>
 	    <property name="password" value="webro1234!"/>
 	    

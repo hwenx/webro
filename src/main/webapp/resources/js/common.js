@@ -37,4 +37,22 @@ Common = {
 			}
 		});
 	},
+	ajaxFactory : function(method, url, data, callback){
+		$.ajax({
+	        type : method,
+	        url : url,
+	        data : data,
+	        dataType : "json",
+	        success : function (result) {
+	        	if(data.xy !== undefined && data.xy !== '') result['xy'] = data.xy;
+	        	callback(result);
+	        	
+	        },
+	        error : function(text){
+	        	alert('처리 중 오류 발생 \n'+url)
+	        }
+	 
+	 
+	    });
+	}
 }
