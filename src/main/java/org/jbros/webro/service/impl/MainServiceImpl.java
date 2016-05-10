@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 import org.jbros.webro.mapper.IMainMapper;
 import org.jbros.webro.models.UserModel;
