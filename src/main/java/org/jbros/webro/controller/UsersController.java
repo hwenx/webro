@@ -61,7 +61,6 @@ public class UsersController {
 	public ModelAndView submitUser(UserModel user){
 		ModelAndView mav = new ModelAndView();
 		int result = usersService.joinUser(user);
-		System.out.println("insert result : " + result);
 		mav.setViewName("redirect:/");
 		return mav;
 	}

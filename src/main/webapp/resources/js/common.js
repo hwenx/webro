@@ -44,7 +44,6 @@ Common = {
 	        data : data,
 	        dataType : "json",
 	        success : function (result) {
-	        	if(data.xy !== undefined && data.xy !== '') result['xy'] = data.xy;
 	        	callback(result);
 	        	
 	        },

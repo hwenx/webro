@@ -14,7 +14,6 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter {
 	private Log log = LogFactory.getLog(LoggerInterceptor.class);
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		
 		//session이 없거나 null이면 login으로 리다이렉트
 		if( request.getSession() == null || request.getSession(false).getAttribute("memberinfo") == null){
 			return false;

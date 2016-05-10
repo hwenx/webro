@@ -11,7 +11,6 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/pagestyle.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/styles.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/jquery.simple-dtpicker.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bottom_chat.css">
 
 <script src="${pageContext.request.contextPath}/resources/js/jquery/jquery-1.12.0.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap/bootstrap.min.js"></script>
@@ -21,6 +20,24 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery/jquery.battatech.excelexport.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery/jquery.simple-dtpicker.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/common.js"></script>
+
+
+<script type="text/javascript">
+//로그인 프로세스 실패 시
+var isState = '${sessionScope.isState}';
+if('N' === isState){
+	alert('아이디 혹은 비밀번호가 맞지 않습니다.')
+}
+//모든 ajax 요청 전 후 처리
+$.ajaxSetup({
+	 beforeSend: function() {
+		$('.wrap-loading').removeClass('display-none');
+	 },
+	 complete: function() {
+		 $('.wrap-loading').addClass('display-none');
+	 }
+});
+</script>
 <!-- 
 <script>
 $(document).ready(function(){

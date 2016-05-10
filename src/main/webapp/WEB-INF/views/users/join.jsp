@@ -13,6 +13,7 @@
 				<div class="col-sm-6">
 					<input type="text" class="form-control" id="inputId" name="inputId"
 						placeholder="아이디">
+					<a class="btn btn-default" href="javascript:dupleIdCheck()" role="button">중복확인</a>
 					<div class="help-block" id="idCheck"></div>
 				</div>
 			</div>
@@ -197,6 +198,7 @@
 	window.joinProcess = function(){
 		var email = $('#inputEmail').val();
 		var id = $('#inputId').val();
+		var check = $('#idCheck').val();
 		if(id === '' || id === undefined){
 			alert('아이디는 필 수 항목 입니다.');
 			return;
@@ -205,6 +207,12 @@
 				alert('사용 불가 아이디 입니다.');
 				return;
 			}
+		}
+		
+		var check = $('#idCheck').text();
+		if(check === '' || check === undefined){
+			alert('중복 체크를 하지 않으셧습니다.');
+			return;
 		}
 		
 		//1. 이메일 검사
@@ -258,9 +266,8 @@
 		}
 	})
 	
-	$('#inputId').on('keyup', function(){
-		console.log('keyup');
-		var value = this.value;
+	window.dupleIdCheck = function(){
+		var value = $('#inputId').val();
 		var m = 'GET';
 		var url = './DupleCheck.ajax';
 		var data = {
@@ -276,9 +283,8 @@
 			}else
 				$('#idCheck').text('사용불가').css('color', 'red');
 			
-		});
+		});	
+	}
 		
-	})
-	
 	
 </script>

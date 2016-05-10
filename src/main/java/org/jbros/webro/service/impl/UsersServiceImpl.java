@@ -7,6 +7,7 @@ import org.jbros.webro.mapper.IUsersMapper;
 import org.jbros.webro.models.UserModel;
 import org.jbros.webro.service.IUsersService;
 import org.jbros.webro.util.S3Util;
+import org.jbros.webro.util.Sha256Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,19 +37,22 @@ public class UsersServiceImpl implements IUsersService {
 
 	@Override
 	public int joinUser(UserModel user) {
+		String passwd = Sha256Util.SHA256(user.getInputPassword());
+		user.setInputPassword(passwd);
 		int result = mapper.joinUser(user);
 		if (1 == result) {
 			S3Util s3 = new S3Util();
 			String newFileName = null;
 			String realFileName = null;
-			String thumbFileName = null;
 
 			realFileName = user.getFileInput().getOriginalFilename();
-			newFileName = user.getInputId() + "01010";
+			int point = realFileName.indexOf(".");
+			String extend = realFileName.substring(point+1, realFileName.length());
+			newFileName = user.getInputId()+"_profile."+extend;
 
 			try {
 				s3.putObject(S3Util.IMAGE_BUCKET_NAME,
-						"users" + "/" + user.getInputId() + "/" + "profile" + "/" + newFileName,
+						"userprofile/"+newFileName,
 						user.getFileInput().getInputStream());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

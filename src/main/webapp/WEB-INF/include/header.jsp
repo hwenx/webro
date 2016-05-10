@@ -13,8 +13,14 @@
 				<div class="nav navbar-nav navbar-left">
 				</div>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="" data-target="#modal_Login" type="button" data-toggle="modal">로그인</a></li>
-					<li><a href="${pageContext.request.contextPath}/users/join">회원가입</a></li>
+					<c:if test="${sessionScope.isSession != 'Y'}">
+						<li><a href="" data-target="#modal_Login" type="button" data-toggle="modal">로그인</a></li>
+						<li><a href="${pageContext.request.contextPath}/users/join">회원가입</a></li>
+					</c:if>
+					<c:if test="${sessionScope.isSession == 'Y'}">
+						<li><a href="${pageContext.request.contextPath}/logout">로그아웃</a></li>
+					</c:if>
+					
 					<li>
 					<input name="is_keyword" value="" class="search_form" title="검색" placeholder=" 검색" autocomplete="off" type="text"></li>
 				</ul>
@@ -53,27 +59,27 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">로그인</h4>
+        	<h4 class="modal-title">로그인</h4>
       </div>
       <div class="modal-body">
         <form class="form-horizontal" role="form" action=""
 				method="post">
 				<div class="form-group">
 
-					<label for="inputEmail3" class="col-sm-3 control-label"
-						style="text-align: left"> Email </label>
+					<label for="id" class="col-sm-3 control-label"
+						style="text-align: left"> ID </label>
 					<div class="col-sm-10">
-						<input type="email" class="form-control" id="inputEmail3"
-							value="test@test.com" name="email" />
+						<input type="text" class="form-control" id="id"
+							value="aaaa" name="id" />
 					</div>
 				</div>
 				<div class="form-group">
 
-					<label for="inputPassword3" class="col-sm-3 control-label">
+					<label for="pass" class="col-sm-3 control-label">
 						Password </label>
 					<div class="col-sm-10">
-						<input type="password" class="form-control" id="inputPassword3"
-							value="test" name="pass" />
+						<input type="password" class="form-control" id="pass"
+							name="pass" value="123456"/>
 					</div>
 				</div>
 				<div class="form-group">
@@ -99,3 +105,5 @@
 
   </div>
 </div>
+
+
